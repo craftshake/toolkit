@@ -1,0 +1,83 @@
+{% extends "toolkit/plugins/_layout" %}
+
+{% set plugin = craft.toolkit.getPluginById(pluginId) %}
+{% set trackedPlugin = craft.plugins.getPlugin(plugin.name) %}
+
+{% set selectedTab = 'releases' %}
+
+{% if releaseId is defined %}
+	{% set release = craft.toolkit.getReleaseById(releaseId) %}
+	{% set title = trackedPlugin.getName() %}
+	{% set version = release.version %}
+	{% set addedRows = release.added %}
+	{% set improvedRows = release.improved %}
+	{% set fixedRows = release.fixed %}
+{% else %}
+	{% set title = 'Create release ' ~ trackedPlugin.getName() ~ ' ' ~ trackedPlugin.getVersion()%}
+	{% set version = trackedPlugin.getVersion() %}
+{% endif %}
+
+{% import "_includes/forms" as forms %}
+
+{% set columns = { message: {
+	heading: 'Message',
+	handle: 'message',
+	type: 'singleline'
+}} %}
+
+{% set content %}
+<form method="post" action="" accept-charset="UTF-8" data-saveshortcut="1">
+	<input type="hidden" name="action" value="toolkit/plugins/saveRelease">
+	<input type="hidden" name="redirect" value="toolkit/plugins/{{ pluginId }}/releases">
+
+	{{ forms.hidden({
+		name: "pluginId",
+		value: pluginId,
+	}) }}
+
+	{{ forms.hidden({
+		name: 'version',
+		value: version,
+	}) }}
+
+	{% if releaseId is defined %}
+	{{ forms.hidden({
+		name: 'releaseId',
+		value: releaseId,
+	}) }}
+	{% endif %}
+
+	{{ forms.editableTableField({
+		label: "Added"|t,
+		instructions: "What's new in this release."|t,
+		id: 'added',
+		name: 'added',
+		cols: columns,
+		rows: (addedRows is defined ? addedRows : null)
+	}) }}
+
+	{{ forms.editableTableField({
+		label: "Improved"|t,
+		instructions: "What's been improved in this release."|t,
+		id: 'improved',
+		name: 'improved',
+		cols: columns,
+		rows: (improvedRows is defined ? improvedRows : null)
+	}) }}
+
+	{{ forms.editableTableField({
+		label: "Fixed"|t,
+		instructions: "What's been fixed in this release"|t,
+		id: 'fixed',
+		name: 'fixed',
+		cols: columns,
+		rows: (fixedRows is defined ? fixedRows : null)
+	}) }}
+
+	<hr>
+
+	<div class="buttons">
+		<input type="submit" class="btn submit" value="{{ 'Save'|t }}">
+	</div>
+</form>
+{% endset %}

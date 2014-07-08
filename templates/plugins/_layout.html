@@ -1,0 +1,12 @@
+{% extends "_layouts/cp" %}
+
+{% set crumbs = [
+	{ label: "Toolkit"|t, url: url('toolkit') },
+	{ label: "Plugins"|t, url: url('toolkit/plugins') }
+] %}
+
+{% set tabs = {
+    overview: { label: "Overview"|t, url: url('toolkit/plugins/' ~ pluginId) },
+    settings: { label: "Settings"|t, url: url('toolkit/plugins/' ~ pluginId ~ '/settings') },
+    releases: { label: "Releases"|t, url: url('toolkit/plugins/' ~ pluginId ~ '/releases') }
+} %}

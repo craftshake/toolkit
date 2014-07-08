@@ -1,0 +1,12 @@
+{% extends "toolkit/plugins/_layout" %}
+
+{% set plugin = craft.toolkit.getPluginById(pluginId) %}
+{% set trackedPlugin = craft.plugins.getPlugin(plugin.name) %}
+
+{% set title = trackedPlugin.getName() %}
+
+{% set selectedTab = 'overview' %}
+
+{% set content %}
+	<p><b>Current version:</b> {{ trackedPlugin.getVersion() }}</p>
+{% endset %}

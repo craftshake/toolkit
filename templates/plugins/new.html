@@ -1,0 +1,12 @@
+{% extends "_layouts/cp" %}
+
+{% set title = "Track new plugin"|t %}
+
+{% set crumbs = [
+	{ label: "Toolkit"|t, url: url('toolkit') },
+	{ label: "Plugins"|t, url: url('toolkit/plugins') }
+] %}
+
+{% set content %}
+	{% include 'toolkit/plugins/_edit.html' %}
+{% endset %}

@@ -1,0 +1,14 @@
+{% extends "_layouts/cp" %}
+{% set title = "Toolkit"|t %}
+
+{% includeCssResource 'css/settings.css' %}
+
+{% set content %}
+
+	<h2>Toolkit tools</h2>
+
+	<ul class="icons">
+		<li><a href="{{ url('toolkit/plugins') }}" data-icon="plugin">Plugins</a></li>
+	</ul>
+
+{% endset %}

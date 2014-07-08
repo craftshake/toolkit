@@ -1,0 +1,60 @@
+{% extends "toolkit/plugins/_layout" %}
+
+{% set plugin = craft.toolkit.getPluginById(pluginId) %}
+{% set trackedPlugin = craft.plugins.getPlugin(plugin.name) %}
+
+{% set title = trackedPlugin.getName() %}
+
+{% set selectedTab = 'releases' %}
+
+{% set releases = plugin.getReleases() %}
+
+{% set content %}
+{% if (craft.toolkit.isReleased(trackedPlugin.getVersion, releases)) %}
+<p>There is already a release for the current version of this plugin</p>
+{% else %}
+<div class="buttons">
+	<a href="{{ url('toolkit/plugins/'~pluginId~'/releases/new') }}" class="btn submit add icon">{{ "Create release"|t }} {{ trackedPlugin.getVersion() }}</a>
+</div>
+{% endif %}
+{% if (releases | length) %}
+	{% for release in releases %}
+	<hr>
+	<div class="toolkit-release">
+		<div class="buttons right">
+			<a class="btn" href="{{ url('toolkit/plugins/'~pluginId~'/releases/'~release.id~'/build') }}">Build</a>
+			<a class="btn" href="{{ url('toolkit/plugins/'~pluginId~'/releases/'~release.id~'/download') }}">Download</a>
+		</div>
+		<h2><a href="{{ url('toolkit/plugins/'~pluginId~'/releases/'~release.id~'') }}">{{ trackedPlugin.getName()}} {{ release.version }}</a></h2>
+		<p class="light" style="margin-top: -1em">Released on {{ release.releaseDate | datetime }}</p>
+
+		{% if release.added | length %}
+		<h3>Added</h3>
+		<ul>
+			{% for row in release.added %}
+			<li>{{ row.message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% if release.improved | length %}
+		<h3>Improved</h3>
+		<ul>
+			{% for row in release.improved %}
+			<li>{{ row.message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+		{% if release.fixed | length %}
+		<h3>Fixed</h3>
+		<ul>
+			{% for row in release.fixed %}
+			<li>{{ row.message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	</div>
+	{% endfor %}
+{% else %}
+	<p>{{ "There are no releases for this plugin yet. Why not create one?"|t }}</p>
+{% endif %}
+{% endset %}

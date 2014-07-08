@@ -1,0 +1,49 @@
+{% extends "_layouts/cp" %}
+{% set title = "Plugins"|t %}
+
+{% set crumbs = [
+	{ label: "Toolkit"|t, url: url('toolkit') }
+] %}
+
+{% set plugins = craft.toolkit.getPlugins() %}
+
+
+{% set content %}
+	{% if plugins|length %}
+		<table id="plugins" class="data fullwidth collapsible">
+			<thead>
+				<th scope="col">{{ "Plugin"|t }}</th>
+				<th scope="col">{{ "Status"|t }}</th>
+				<td class="thin"></td>
+			</thead>
+			<tbody>
+				{% for plugin in plugins %}
+					{% set trackedPlugin = craft.plugins.getPlugin(plugin.name) %}
+					{% set name = trackedPlugin.getName() -%}
+					{% set isBuilt = plugin.isBuilt() -%}
+					{% set pluginUrl = url('toolkit/plugins/' ~ plugin.id) -%}
+
+					<tr data-name="{{ name }}">
+						<th data-title="{{ 'Name'|t }}">
+							<a href="{{ pluginUrl }}">{{ name }}</a>
+							<span class="light">{{ trackedPlugin.getVersion() }}</span>
+						</th>
+						<td data-title="{{ 'Status'|t }}">
+							{% if isBuilt %}
+								<span class="status on"></span> {{ "Built"|t }}
+							{% else %}
+								<span class="status"></span> <span class="light">{{ "Not built"|t }}</span>
+							{% endif %}
+						</td>
+						<td class="thin"><a class="delete icon" title="{{ 'Delete'|t }}" role="button"></a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<p>{{ "There are no tracked plugins."|t }}
+	{% endif %}
+	<div class="buttons">
+		<a href="{{ url('toolkit/plugins/new') }}" class="btn submit add icon">{{ "Track new plugin"|t }}</a>
+	</div>
+{% endset %}

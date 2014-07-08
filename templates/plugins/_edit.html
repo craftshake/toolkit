@@ -1,0 +1,46 @@
+{% import "_includes/forms" as forms %}
+
+{% if plugin is defined %}
+	{% set excluded = plugin.settings.excluded|join('\r\n') %}
+{% endif %}
+
+{% set plugins = craft.plugins.getPlugins(false) %}
+
+<form method="post" action="" accept-charset="UTF-8" data-saveshortcut="1">
+	<input type="hidden" name="action" value="toolkit/plugins/savePlugin">
+	<input type="hidden" name="redirect" value="toolkit/plugins">
+
+	{% set pluginOptions = [] %}
+	{% for plugin in plugins %}
+		{% set name = plugin.getName() -%}
+		{% set classHandle = plugin.getClassHandle() -%}
+		{% set pluginOptions = pluginOptions|merge([{ label: name, value: classHandle }]) %}
+	{% endfor %}
+	{{ forms.selectField({
+		first: true,
+		label: "Plugin"|t,
+		instructions: "Which plugin you want to track"|t,
+		id: 'plugin',
+		name: 'plugin',
+		options: pluginOptions,
+		value: (plugin is defined ? plugin.name : null)
+	}) }}
+
+	<hr>
+
+	{{ forms.textareaField({
+		label: "Excluded directories"|t,
+		instructions: "Which directories will be excluded during build"|t,
+		class: 'excluded',
+		name: 'settings[excluded]',
+		placeholder: "resources/sass"|t,
+		rows: 4,
+		value: (excluded is defined ? excluded : null)
+	}) }}
+
+	<hr>
+
+	<div class="buttons">
+		<input type="submit" class="btn submit" value="{{ 'Save'|t }}">
+	</div>
+</form>
