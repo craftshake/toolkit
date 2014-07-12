@@ -87,6 +87,15 @@ class Toolkit_PluginsService extends BaseApplicationComponent
 		}
 	}
 
+	public function buildRelease($release)
+	{
+		$plugin = $release->getPlugin();
+
+		$fullName = $plugin->name . '-' . $release->version;
+
+		// Build release
+	}
+
 	private function _getPluginRecord(Toolkit_PluginModel $plugin)
 	{
 		if ($plugin->id)

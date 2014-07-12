@@ -62,7 +62,6 @@ class Toolkit_PluginsController extends BaseController
 		}
 		else
 		{
-			var_dump($release->getErrors());
 			craft()->userSession->setError(Craft::t('Couldn’t save this release.'));
 		}
 
@@ -71,8 +70,26 @@ class Toolkit_PluginsController extends BaseController
 		));
 	}
 
-	public function actionBuildRelease()
+	public function actionBuildRelease(array $variables)
 	{
-		//$this->redirect('toolkit/plugins/')
+		$releaseId = $variables['releaseId'];
+
+		$release = craft()->toolkit_plugins->getReleaseById($releaseId);
+
+		if (craft()->toolkit_plugins->buildRelease($release))
+		{
+			craft()->userSession->setNotice(Craft::t('Release has been built.'));
+		}
+		else
+		{
+			craft()->userSession->setError(Craft::t('Couldn’t build this release.'));
+		}
+
+		//$this->redirect('toolkit/plugins/' . $release->pluginId . '/' . $releaseId);
+	}
+
+	public function actionDownloadRelease(array $variables)
+	{
+
 	}
 }
