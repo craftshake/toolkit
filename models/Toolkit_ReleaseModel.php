@@ -21,4 +21,10 @@ class Toolkit_ReleaseModel extends BaseModel
 	{
 		return craft()->toolkit_plugins->getPluginById($this->pluginId);
 	}
+
+	public function isBuilt()
+	{
+		$plugin = $this->getPlugin();
+		return craft()->toolkit_plugins->releaseExists($plugin->name, $this->version);
+	}
 }

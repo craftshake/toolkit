@@ -22,8 +22,12 @@
 	<hr>
 	<div class="toolkit-release">
 		<div class="buttons right">
-			<a class="btn" href="{{ url('toolkit/plugins/'~pluginId~'/releases/'~release.id~'/build') }}">Build</a>
+			{% if release.isBuilt %}
+			<a class="btn" href="{{ url('toolkit/plugins/'~pluginId~'/releases/'~release.id~'/build') }}">Rebuild</a>
 			<a class="btn" href="{{ url('toolkit/plugins/'~pluginId~'/releases/'~release.id~'/download') }}">Download</a>
+			{% else %}
+			<a class="btn" href="{{ url('toolkit/plugins/'~pluginId~'/releases/'~release.id~'/build') }}">Build</a>
+			{% endif %}
 		</div>
 		<h2><a href="{{ url('toolkit/plugins/'~pluginId~'/releases/'~release.id~'') }}">{{ trackedPlugin.getName()}} {{ release.version }}</a></h2>
 		<p class="light" style="margin-top: -1em">Released on {{ release.releaseDate | datetime }}</p>

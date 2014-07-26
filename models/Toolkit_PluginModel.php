@@ -20,6 +20,7 @@ class Toolkit_PluginModel extends BaseModel
 
 	public function isBuilt()
 	{
-		return false;
+		$plugin = craft()->plugins->getPlugin($this->name);
+		return craft()->toolkit_plugins->releaseExists($this->name, $plugin->version);
 	}
 }

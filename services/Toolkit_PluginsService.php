@@ -91,9 +91,43 @@ class Toolkit_PluginsService extends BaseApplicationComponent
 	{
 		$plugin = $release->getPlugin();
 
-		$fullName = $plugin->name . '-' . $release->version;
+		$file = $plugin->name . '-' . $release->version;
 
 		// Build release
+		$directory = IOHelper::normalizePathSeparators(craft()->path->getPluginsPath() . $plugin->name);
+		$filter = $plugin->settings['excluded'];
+
+		$fileinfos = new \RecursiveIteratorIterator (
+			new \RecursiveCallbackFilterIterator(
+				new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS),
+				function ($fileInfo, $key, $iterator) use ($filter) {
+					return $fileInfo->isFile() || !in_array($fileInfo->getBaseName(), $filter);
+				}
+			)
+		);
+
+		$destZip = craft()->path->getTempPath().$file.'.zip';
+		if (IOHelper::fileExists($destZip))
+		{
+			IOHelper::deleteFile($destZip, true);
+		}
+
+		IOHelper::createFile($destZip);
+
+		foreach($fileinfos as $pathname => $fileinfo) {
+			if (!Zip::add($destZip, $pathname, $directory))
+			{
+				IOHelper::deleteFile($destZip, true);
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	public function releaseExists($name, $version)
+	{
+		return IOHelper::fileExists(craft()->path->getTempPath().$name . '-' . $version.'.zip');
 	}
 
 	private function _getPluginRecord(Toolkit_PluginModel $plugin)

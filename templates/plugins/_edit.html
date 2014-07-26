@@ -11,9 +11,9 @@
 	<input type="hidden" name="redirect" value="toolkit/plugins">
 
 	{% set pluginOptions = [] %}
-	{% for plugin in plugins %}
+	{% for key, plugin in plugins %}
 		{% set name = plugin.getName() -%}
-		{% set classHandle = plugin.getClassHandle() -%}
+		{% set classHandle = key -%}
 		{% set pluginOptions = pluginOptions|merge([{ label: name, value: classHandle }]) %}
 	{% endfor %}
 	{{ forms.selectField({

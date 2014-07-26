@@ -85,7 +85,7 @@ class Toolkit_PluginsController extends BaseController
 			craft()->userSession->setError(Craft::t('Couldn’t build this release.'));
 		}
 
-		//$this->redirect('toolkit/plugins/' . $release->pluginId . '/' . $releaseId);
+		$this->redirect('toolkit/plugins/' . $release->pluginId);
 	}
 
 	public function actionDownloadRelease(array $variables)
