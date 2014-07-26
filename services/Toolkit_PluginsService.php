@@ -125,6 +125,16 @@ class Toolkit_PluginsService extends BaseApplicationComponent
 		return true;
 	}
 
+	public function downloadRelease($release)
+	{
+		$fileName = $release->getPlugin()->name.'-'.$release->version;
+
+		if (($filePath = IOHelper::fileExists(craft()->path->getTempPath().$fileName.'.zip')) == true)
+		{
+			craft()->request->sendFile(IOHelper::getFileName($filePath), IOHelper::getFileContents($filePath), array('forceDownload' => true));
+		}
+	}
+
 	public function releaseExists($name, $version)
 	{
 		return IOHelper::fileExists(craft()->path->getTempPath().$name . '-' . $version.'.zip');

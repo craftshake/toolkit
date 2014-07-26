@@ -38,6 +38,7 @@ class ToolkitPlugin extends BasePlugin
 			'toolkit/plugins/(?P<pluginId>\d+)/releases/new' => 'toolkit/plugins/_editrelease',
 			'toolkit/plugins/(?P<pluginId>\d+)/releases/(?P<releaseId>\d+)' => 'toolkit/plugins/_editrelease',
 			'toolkit/plugins/(?P<pluginId>\d+)/releases/(?P<releaseId>\d+)/build' => array('action' => 'toolkit/plugins/buildRelease'),
+			'toolkit/plugins/(?P<pluginId>\d+)/releases/(?P<releaseId>\d+)/download' => array('action' => 'toolkit/plugins/downloadRelease'),
 		);
 	}
 }

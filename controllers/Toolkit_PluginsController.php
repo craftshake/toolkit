@@ -90,6 +90,10 @@ class Toolkit_PluginsController extends BaseController
 
 	public function actionDownloadRelease(array $variables)
 	{
+		$releaseId = $variables['releaseId'];
 
+		$release = craft()->toolkit_plugins->getReleaseById($releaseId);
+
+		craft()->toolkit_plugins->downloadRelease($release);
 	}
 }
