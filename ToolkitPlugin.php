@@ -32,7 +32,7 @@ class ToolkitPlugin extends BasePlugin
 	public function registerCpRoutes()
 	{
 		return array(
-			'toolkit/plugins/(?P<pluginId>\d+)' => 'toolkit/plugins/_overview',
+			'toolkit/plugins/(?P<pluginId>\d+)' => 'toolkit/plugins/_releases',
 			'toolkit/plugins/(?P<pluginId>\d+)/settings' => 'toolkit/plugins/_settings',
 			'toolkit/plugins/(?P<pluginId>\d+)/releases' => 'toolkit/plugins/_releases',
 			'toolkit/plugins/(?P<pluginId>\d+)/releases/new' => 'toolkit/plugins/_editrelease',
