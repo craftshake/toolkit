@@ -115,7 +115,7 @@ class Toolkit_PluginsService extends BaseApplicationComponent
 		IOHelper::createFile($destZip);
 
 		foreach($fileinfos as $pathname => $fileinfo) {
-			if (!Zip::add($destZip, $pathname, $directory))
+			if (!Zip::add($destZip, $pathname, $directory, IOHelper::normalizePathSeparators($plugin->name.'/')))
 			{
 				IOHelper::deleteFile($destZip, true);
 				return false;
